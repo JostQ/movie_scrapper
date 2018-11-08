@@ -1,0 +1,36 @@
+<div class="container mt-3">
+  <h1 class="row justify-content-center">Search : <%= params[:search] %></h1>
+  <div class="row">
+    <table class="table col-12 shadow">
+      <thead class="thead-dark">
+        <tr>
+          <th>Title</th>
+          <th>Release date</th>
+          <th>Director</th>
+          <th>Poster</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @movies.each do |movie| %>
+        <% compter = 0 %>
+        <tr>
+          <td><%= movie["title"] %></td>
+          <td><%= movie["release_date"] %></td>
+          <td>
+            <% Tmdb::Movie.credits(movie["id"])["crew"].each do |mate| %>
+              <% if mate["job"] == "Director" %>
+                <% compter += 1 %>
+                <% if compter > 1 %>
+                  -
+                <% end %>
+                <%= mate["name"] %>
+              <% end %>
+            <% end %>
+          </td>
+          <td><img src="https://image.tmdb.org/t/p/w185_and_h278_bestv2<%= movie["poster_path"] %>" alt="<%=movie["title"] %>'s Poster"></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
